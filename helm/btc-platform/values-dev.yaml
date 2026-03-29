@@ -7,10 +7,10 @@ ingress:
 
 serviceA:
   image:
-    repository: ghcr.io/NoamTrabelsi/service-a
+    repository: ghcr.io/noamtrabelsi12/service-a
     tag: "1.0.0"
 
 serviceB:
   image:
-    repository: ghcr.io/NoamTrabelsi/service-b
+    repository: ghcr.io/noamtrabelsi12/service-b
     tag: "1.0.0"

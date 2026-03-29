@@ -58,11 +58,6 @@ resource aks 'Microsoft.ContainerService/managedClusters@2025-08-01' = {
         vmSize: systemNodeVmSize
         osType: 'Linux'
         type: 'VirtualMachineScaleSets'
-        availabilityZones: [
-          '1'
-          '2'
-          '3'
-        ]
         enableAutoScaling: true
         minCount: systemNodeMinCount
         maxCount: systemNodeMaxCount
