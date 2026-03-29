@@ -1,0 +1,51 @@
+{{- if .Values.serviceB.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "btc-platform.serviceBName" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "btc-platform.labels" . | nindent 4 }}
+    app.kubernetes.io/component: service-b
+spec:
+  replicas: {{ .Values.serviceB.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "btc-platform.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: service-b
+  template:
+    metadata:
+      labels:
+        {{- include "btc-platform.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: service-b
+    spec:
+      containers:
+        - name: service-b
+          image: "{{ .Values.serviceB.image.repository }}:{{ .Values.serviceB.image.tag }}"
+          imagePullPolicy: {{ .Values.serviceB.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.serviceB.containerPort }}
+              protocol: TCP
+          env:
+            - name: PORT
+              value: {{ .Values.serviceB.env.PORT | quote }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.serviceB.livenessProbe.path }}
+              port: http
+            initialDelaySeconds: {{ .Values.serviceB.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.serviceB.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.serviceB.livenessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.serviceB.livenessProbe.failureThreshold }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.serviceB.readinessProbe.path }}
+              port: http
+            initialDelaySeconds: {{ .Values.serviceB.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.serviceB.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.serviceB.readinessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.serviceB.readinessProbe.failureThreshold }}
+          resources:
+            {{- toYaml .Values.serviceB.resources | nindent 12 }}
+{{- end }}

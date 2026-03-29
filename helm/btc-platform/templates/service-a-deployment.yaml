@@ -1,0 +1,59 @@
+{{- if .Values.serviceA.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "btc-platform.serviceAName" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "btc-platform.labels" . | nindent 4 }}
+    app.kubernetes.io/component: service-a
+spec:
+  replicas: {{ .Values.serviceA.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "btc-platform.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: service-a
+  template:
+    metadata:
+      labels:
+        {{- include "btc-platform.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: service-a
+    spec:
+      containers:
+        - name: service-a
+          image: "{{ .Values.serviceA.image.repository }}:{{ .Values.serviceA.image.tag }}"
+          imagePullPolicy: {{ .Values.serviceA.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.serviceA.containerPort }}
+              protocol: TCP
+          env:
+            - name: PORT
+              value: {{ .Values.serviceA.env.PORT | quote }}
+            - name: BTC_POLL_INTERVAL_MS
+              value: {{ .Values.serviceA.env.BTC_POLL_INTERVAL_MS | quote }}
+            - name: BTC_AVERAGE_INTERVAL_MS
+              value: {{ .Values.serviceA.env.BTC_AVERAGE_INTERVAL_MS | quote }}
+            - name: BTC_MAX_SAMPLES
+              value: {{ .Values.serviceA.env.BTC_MAX_SAMPLES | quote }}
+            - name: BTC_REQUEST_TIMEOUT_MS
+              value: {{ .Values.serviceA.env.BTC_REQUEST_TIMEOUT_MS | quote }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.serviceA.livenessProbe.path }}
+              port: http
+            initialDelaySeconds: {{ .Values.serviceA.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.serviceA.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.serviceA.livenessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.serviceA.livenessProbe.failureThreshold }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.serviceA.readinessProbe.path }}
+              port: http
+            initialDelaySeconds: {{ .Values.serviceA.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.serviceA.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.serviceA.readinessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.serviceA.readinessProbe.failureThreshold }}
+          resources:
+            {{- toYaml .Values.serviceA.resources | nindent 12 }}
+{{- end }}

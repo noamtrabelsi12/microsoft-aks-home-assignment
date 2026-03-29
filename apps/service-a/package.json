@@ -1,0 +1,20 @@
+{
+  "name": "service-a",
+  "version": "1.0.0",
+  "description": "Service A - Bitcoin price poller and rolling average calculator",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts"
+  },
+  "dependencies": {
+    "express": "4.21.2"
+  },
+  "devDependencies": {
+    "@types/express": "5.0.1",
+    "@types/node": "22.13.14",
+    "tsx": "4.19.3",
+    "typescript": "5.8.2"
+  }
+}
