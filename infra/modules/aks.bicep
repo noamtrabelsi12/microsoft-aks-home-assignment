@@ -86,14 +86,7 @@ resource aks 'Microsoft.ContainerService/managedClusters@2025-08-01' = {
       }
     }
 
-    ingressProfile: {
-      gatewayAPI: {
-        enabled: true
-      }
-      applicationLoadBalancer: {
-        enabled: true
-      }
-    }
+    
   }
 }
 

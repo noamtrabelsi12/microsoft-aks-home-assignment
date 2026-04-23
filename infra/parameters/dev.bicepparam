@@ -3,7 +3,7 @@ using '../main.bicep'
 param aksClusterName = 'noam-aks-home'
 param dnsPrefix = 'noam-aks-home'
 param kubernetesVersion = '1.34.3'
-param systemNodeVmSize = 'Standard_D2s_v5'
+param systemNodeVmSize = 'Standard_D2_v3'
 param systemNodeCount = 1
 param systemNodeMinCount = 1
 param systemNodeMaxCount = 1
